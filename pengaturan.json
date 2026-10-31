@@ -1,0 +1,18 @@
+{
+  "model": "eleven_multilingual_v2",
+  "volumeMusik": 0.13,
+  "suaraPengaturan": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "style": 0.3,
+    "speed": 1.0,
+    "use_speaker_boost": true
+  },
+  "episode": {
+    "01-listrik": {"suaraEl": "TMvmhlKUioQA4U7LOoko", "musik": "energik"},
+    "02-kulkas": {"suaraEl": "WQ4h6sgS9p2XXvLsESBT", "musik": "ceria"},
+    "03-gps": {"suaraEl": "TMvmhlKUioQA4U7LOoko", "musik": "misteri"},
+    "04-sinyal-hp": {"suaraEl": "WQ4h6sgS9p2XXvLsESBT", "musik": "ceria"},
+    "05-microwave": {"suaraEl": "WQ4h6sgS9p2XXvLsESBT", "musik": "tenang"}
+  }
+}

@@ -2,7 +2,8 @@ import React from 'react';
 import {CalculateMetadataFunction, Composition, staticFile} from 'remotion';
 import {getAudioDurationInSeconds} from '@remotion/media-utils';
 import sample from '../episodes/01-listrik.json';
-import {PAD, Video} from './Video';
+import {PAD} from './Video';
+import {Utama} from './Utama';
 import type {Episode, Props} from './types';
 
 const FPS = 30;
@@ -25,7 +26,7 @@ const hitungDurasi: CalculateMetadataFunction<Props> = async ({props}) => {
 export const Root: React.FC = () => (
   <Composition
     id="Video"
-    component={Video}
+    component={Utama}
     width={1080}
     height={1920}
     fps={FPS}

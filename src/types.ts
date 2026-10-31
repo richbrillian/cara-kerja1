@@ -21,9 +21,17 @@ export type Episode = {
   id?: string;
   judul: string;
   channel: string;
-  /** suara edge-tts: id-ID-ArdiNeural (pria) atau id-ID-GadisNeural (wanita) */
+  /** suara gratis edge-tts: id-ID-ArdiNeural (pria) atau id-ID-GadisNeural (wanita) */
   suara?: string;
   kecepatan?: string;
+  /** voice_id ElevenLabs (dipakai kalau kunci API tersedia) */
+  suaraEl?: string;
+  modelEl?: string;
+  /** gaya musik: ceria | tenang | misteri | energik | tanpa, atau nama file di public/musik/ */
+  musik?: string;
+  /** diisi otomatis oleh scripts/build.mjs */
+  musikFile?: string | null;
+  volumeMusik?: number;
   /** warna utama, format #RRGGBB */
   warna: string;
   adegan: Adegan[];
