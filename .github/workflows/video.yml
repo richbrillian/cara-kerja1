@@ -1,0 +1,71 @@
+name: Buat video
+
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: "Nama file episode tanpa .json (kosong = semua). Contoh: 01-listrik"
+        required: false
+        default: ""
+  push:
+    branches: [main]
+    paths: ["episodes/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pasang suara gratis dan font
+        run: |
+          pip install edge-tts
+          sudo apt-get update -y
+          sudo apt-get install -y fonts-noto-color-emoji
+          sudo apt-get install -y fonts-inter || true
+
+      - name: Tentukan episode
+        id: pick
+        env:
+          INPUT_EP: ${{ inputs.episode }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          LIST=""
+          if [ -n "$INPUT_EP" ]; then
+            LIST="$INPUT_EP"
+          elif [ "$EVENT" = "push" ]; then
+            LIST=$(git diff --name-only HEAD~1 HEAD -- episodes 2>/dev/null | grep '\.json$' | xargs -r -n1 basename | sed 's/\.json$//' | paste -sd, - || true)
+          fi
+          echo "list=$LIST" >> "$GITHUB_OUTPUT"
+
+      - run: npm install --no-audit --no-fund
+
+      - name: Buat suara dan render video
+        env:
+          REQUIRE_VOICE: "1"
+          LIST: ${{ steps.pick.outputs.list }}
+        run: node scripts/build.mjs "$LIST"
+
+      - name: Terbitkan hasil (bisa diunduh dari HP)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_NO: ${{ github.run_number }}
+          SHA: ${{ github.sha }}
+        run: |
+          gh release create "video-$RUN_NO" out/*.mp4 --target "$SHA" \
+            --title "Video #$RUN_NO" \
+            --notes "Hasil render otomatis. Buka di HP, ketuk file .mp4, lalu simpan."
