@@ -1,31 +1,87 @@
-# Cara Kerja Sehari-hari: pabrik video otomatis
+name: Buat Video
 
-Satu file naskah (`episodes/xx.json`) menjadi satu video vertikal lengkap dengan suara.
-Suara Indonesia gratis (edge-tts) dan render berjalan di GitHub Actions, jadi tidak memakai kredit Claude.
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: "Episode (mis. 01-listrik). Kosong = semua"
+        required: false
+  push:
+    paths: ["episodes/**"]
 
-## Buat video dari HP
-1. Buka repo di aplikasi GitHub, atau `github.dev`, lalu tambah/ubah file di folder `episodes/`.
-2. Simpan (commit). Video otomatis dibuat ± 5 menit per episode.
-   Atau: tab **Actions → Buat video → Run workflow**, isi nama episode (kosong = semua).
-3. Hasilnya ada di tab **Releases**. Ketuk file `.mp4`, lalu simpan ke galeri.
+permissions:
+  contents: write
 
-## Isi naskah (contoh ada di `episodes/01-listrik.json`)
-Tiap adegan punya: `tipe` (hook / langkah / fakta / penutup), `emoji`, `judul` (pendek),
-`narasi` (kalimat yang diucapkan dan jadi teks karaoke).
-Opsional: `angka` + `satuan` (angka besar yang menghitung naik), `alur` (deretan emoji yang
-menyala berurutan), `analogi` (perumpamaan sehari-hari, maks ± 85 huruf).
-Suara: `id-ID-ArdiNeural` (pria) atau `id-ID-GadisNeural` (wanita).
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-## Resep naskah yang menarik untuk orang awam
-- Adegan pertama: pertanyaan yang bikin penasaran ("Kok bisa?").
-- Satu adegan = satu ide. Narasi 2–3 kalimat pendek.
-- Pakai perumpamaan benda sehari-hari (dinamo sepeda, selang air, kode morse).
-- Tulis angka dalam kata di `narasi` ("lima ratus ribu volt") supaya suaranya benar.
-- Penutup: sebut topik besok + ajak follow.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-## Di laptop (opsional)
-```
-npm install
-pip install edge-tts
-node scripts/build.mjs 01-listrik    # hasil: out/01-listrik.mp4
-```
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pasang alat suara dan font
+        run: |
+          pip install edge-tts piper-tts
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-color-emoji ffmpeg
+          sudo apt-get install -y fonts-inter || true
+
+      - name: Unduh model suara Piper (cadangan)
+        continue-on-error: true
+        run: |
+          mkdir -p piper
+          B=https://huggingface.co/rhasspy/piper-voices/resolve/main/id/id_ID/news_tts/medium
+          curl -fL -o piper/id.onnx "$B/id_ID-news_tts-medium.onnx"
+          curl -fL -o piper/id.onnx.json "$B/id_ID-news_tts-medium.onnx.json"
+
+      - name: Simpan suara agar tidak dibuat ulang
+        uses: actions/cache@v4
+        with:
+          path: public/audio
+          key: audio-${{ github.run_id }}
+          restore-keys: audio-
+
+      - name: Tentukan episode
+        id: ep
+        env:
+          INPUT_EP: ${{ github.event.inputs.episode }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            LIST="$INPUT_EP"
+          else
+            LIST=$(git diff --name-only HEAD~1 HEAD -- episodes | sed 's#episodes/##; s#\.json##' | paste -sd, -)
+          fi
+          echo "list=$LIST" >> "$GITHUB_OUTPUT"
+
+      - run: npm install
+
+      - name: Render video
+        env:
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          LIST: ${{ steps.ep.outputs.list }}
+        run: |
+          if [ -f piper/id.onnx ]; then export PIPER_MODEL=piper/id.onnx; fi
+          REQUIRE_VOICE=1 node scripts/build.mjs "$LIST"
+
+      - name: Rilis video
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_NO: ${{ github.run_number }}
+          SHA: ${{ github.sha }}
+        run: |
+          gh release create "video-$RUN_NO" out/*.mp4 \
+            --target "$SHA" \
+            --title "Video $RUN_NO" \
+            --notes "Video siap diunduh."
