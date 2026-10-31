@@ -1,0 +1,54 @@
+{
+  "judul": "Kenapa kulkas bisa dingin?",
+  "channel": "CARA KERJA SEHARI-HARI",
+  "suara": "id-ID-GadisNeural",
+  "warna": "#4FC3F7",
+  "adegan": [
+    {
+      "tipe": "hook",
+      "emoji": "🧊",
+      "judul": "Kulkas tidak membuat dingin!",
+      "narasi": "Kamu kira kulkas membuat dingin? Ternyata bukan. Kulkas justru memindahkan panas, dari dalam ke belakang."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🧪",
+      "judul": "Ada cairan khusus di dalam pipa",
+      "narasi": "Di dalam pipa kulkas ada cairan khusus yang disebut refrigeran. Cairan ini sangat mudah berubah menjadi uap.",
+      "analogi": "Seperti alkohol di kulit: waktu menguap, terasa dingin."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "❄️",
+      "judul": "Menguap berarti menyerap panas",
+      "narasi": "Saat cairan menguap di dalam kulkas, ia menyerap panas dari makananmu. Makanan jadi dingin, dan cairannya berubah jadi uap hangat.",
+      "alur": ["🥦", "🔥", "💨"]
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "⚙️",
+      "judul": "Kompresor memeras uapnya",
+      "narasi": "Uap hangat itu ditekan oleh kompresor, lalu dialirkan ke pipa di belakang kulkas. Di sana panasnya dibuang ke udara.",
+      "alur": ["💨", "⚙️", "🔥", "🌬️"]
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "🖐️",
+      "judul": "Coba pegang bagian belakang kulkas",
+      "narasi": "Coba pegang pipa di belakang kulkas. Terasa hangat, kan? Itulah panas dari makananmu yang dibuang keluar."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🔁",
+      "judul": "Berputar terus sampai pas",
+      "narasi": "Cairan lalu mengembun jadi cair lagi dan kembali ke dalam. Proses ini berulang terus, sampai suhunya pas. Lalu kulkas berhenti sendiri.",
+      "alur": ["💧", "💨", "⚙️", "🔥", "💧"]
+    },
+    {
+      "tipe": "penutup",
+      "emoji": "📍",
+      "judul": "Besok: HP tahu posisimu, kok bisa?",
+      "narasi": "Besok kita bahas, bagaimana GPS tahu posisimu. Follow ya!"
+    }
+  ]
+}

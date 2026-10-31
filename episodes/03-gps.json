@@ -1,0 +1,54 @@
+{
+  "judul": "Kok HP tahu aku di mana?",
+  "channel": "CARA KERJA SEHARI-HARI",
+  "suara": "id-ID-ArdiNeural",
+  "warna": "#66BB6A",
+  "adegan": [
+    {
+      "tipe": "hook",
+      "emoji": "📍",
+      "judul": "Kok HP tahu aku di mana?",
+      "narasi": "Di tengah hutan pun, HP bisa tahu kamu berada di mana. Padahal tidak ada sinyal internet. Bagaimana caranya?"
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🛰️",
+      "judul": "Satelit mengirim jam",
+      "narasi": "Di atas sana ada puluhan satelit GPS. Setiap satelit terus mengirim sinyal berisi jam dan posisinya sendiri."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "⏱️",
+      "judul": "HP menghitung selisih waktu",
+      "narasi": "Sinyal butuh waktu untuk sampai ke HP. Dari selisih waktu itu, HP bisa menghitung jaraknya ke satelit.",
+      "alur": ["🛰️", "⏱️", "📏", "📱"],
+      "analogi": "Seperti menghitung jarak petir: makin lama suaranya, makin jauh petirnya."
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "🛰️",
+      "judul": "Minimal empat satelit",
+      "angka": "4",
+      "satuan": "satelit",
+      "narasi": "Kalau HP menangkap sinyal dari minimal empat satelit, posisimu bisa dipastikan. Lengkap dengan ketinggiannya."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "👂",
+      "judul": "HP hanya mendengarkan",
+      "narasi": "Yang unik, HP-mu tidak mengirim apa pun ke satelit. Ia hanya mendengarkan. Jadi satelit tidak tahu kamu ada di mana."
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "🗺️",
+      "judul": "Internet hanya untuk petanya",
+      "narasi": "Itu sebabnya GPS bisa dipakai gratis, di mana saja. Internet hanya dipakai untuk menampilkan peta di layar."
+    },
+    {
+      "tipe": "penutup",
+      "emoji": "📞",
+      "judul": "Besok: suaramu terbang ke mana?",
+      "narasi": "Besok kita bahas, bagaimana suaramu sampai ke telepon temanmu. Follow ya!"
+    }
+  ]
+}

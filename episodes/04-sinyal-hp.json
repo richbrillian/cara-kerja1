@@ -1,0 +1,54 @@
+{
+  "judul": "Bagaimana suaramu sampai ke HP temanmu?",
+  "channel": "CARA KERJA SEHARI-HARI",
+  "suara": "id-ID-GadisNeural",
+  "warna": "#BA68C8",
+  "adegan": [
+    {
+      "tipe": "hook",
+      "emoji": "📞",
+      "judul": "Suaramu terbang lewat udara?",
+      "narasi": "Kamu bicara di HP, dan temanmu di kota lain langsung mendengar. Tidak ada kabel di antara kalian. Lalu bagaimana bisa?"
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🎤",
+      "judul": "Suara diubah jadi angka",
+      "narasi": "Pertama, HP mengubah suaramu menjadi kode angka. Lalu kode itu dikirim lewat gelombang radio.",
+      "alur": ["🗣️", "🔢", "📡"],
+      "analogi": "Seperti kode morse, tapi jauh lebih cepat."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🗼",
+      "judul": "Ditangkap menara BTS",
+      "narasi": "Gelombang radio itu ditangkap menara terdekat, yang disebut BTS. Itulah kenapa sinyal hilang kalau kamu jauh dari menara."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🌐",
+      "judul": "Lewat kabel di dalam tanah",
+      "narasi": "Dari menara, datamu umumnya berjalan lewat kabel serat optik di dalam tanah, menuju pusat jaringan operator.",
+      "alur": ["🗼", "🌐", "🏢"]
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "📲",
+      "judul": "Sampai ke HP temanmu",
+      "narasi": "Pusat jaringan mencari tahu di mana temanmu berada, lalu mengirim kodenya ke menara terdekat darinya. HP temanmu mengubah kode itu jadi suara.",
+      "alur": ["🏢", "🗼", "📡", "📱"]
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "⚡",
+      "judul": "Semua itu cuma sekejap",
+      "narasi": "Dan semua itu terjadi dalam waktu kurang dari satu detik."
+    },
+    {
+      "tipe": "penutup",
+      "emoji": "🍲",
+      "judul": "Besok: microwave tanpa api, kok panas?",
+      "narasi": "Besok kita bahas, kenapa microwave bisa memanaskan makanan tanpa api. Follow ya!"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "judul": "Microwave: tanpa api kok bisa panas?",
+  "channel": "CARA KERJA SEHARI-HARI",
+  "suara": "id-ID-GadisNeural",
+  "warna": "#FF8A65",
+  "adegan": [
+    {
+      "tipe": "hook",
+      "emoji": "🍲",
+      "judul": "Tanpa api, kok bisa panas?",
+      "narasi": "Microwave tidak punya api, dan tidak ada yang menyala merah. Tapi makanan bisa panas dalam hitungan menit. Kok bisa?"
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "📡",
+      "judul": "Memancarkan gelombang mikro",
+      "narasi": "Microwave memancarkan gelombang mikro ke dalam ruangannya. Gelombang ini sejenis gelombang radio."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "💧",
+      "judul": "Air di makanan jadi bergoyang",
+      "narasi": "Gelombang itu membuat molekul air di dalam makanan bergoyang sangat cepat. Hampir semua makanan mengandung air.",
+      "alur": ["📡", "💧", "🌀", "🔥"],
+      "analogi": "Seperti menggosok kedua tangan: gesekan membuat tangan hangat."
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "🌀",
+      "judul": "Getarannya super cepat",
+      "angka": "2,45",
+      "satuan": "miliar getaran per detik",
+      "narasi": "Gelombangnya bergetar sekitar dua koma empat lima miliar kali per detik. Itu yang membuat air bergoyang begitu cepat."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🥣",
+      "judul": "Kenapa piringnya tidak ikut panas?",
+      "narasi": "Piring kering hampir tidak mengandung air, jadi tidak ikut dipanaskan. Piring baru terasa hangat karena menerima panas dari makanannya."
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "🚫",
+      "judul": "Jangan masukkan logam!",
+      "narasi": "Satu hal penting: jangan pernah memasukkan logam atau aluminium foil ke dalam microwave. Logam memantulkan gelombang dan bisa menimbulkan percikan api."
+    },
+    {
+      "tipe": "penutup",
+      "emoji": "🙋",
+      "judul": "Kamu penasaran apa lagi?",
+      "narasi": "Kamu penasaran cara kerja apa lagi? Tulis di kolom komentar, dan kami bahas berikutnya. Follow ya!"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "judul": "Dari mana listrik di rumahmu?",
+  "channel": "CARA KERJA SEHARI-HARI",
+  "suara": "id-ID-ArdiNeural",
+  "warna": "#FFD21F",
+  "adegan": [
+    {
+      "tipe": "hook",
+      "emoji": "💡",
+      "judul": "Klik saklar, lampu langsung nyala!",
+      "narasi": "Kamu klik saklar, lampu langsung nyala. Tapi listriknya ternyata menempuh perjalanan yang sangat jauh. Yuk, kita ikuti!"
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🏭",
+      "judul": "Dibuat di pembangkit",
+      "narasi": "Pertama, listrik dibuat di pembangkit. Uap atau air yang kuat memutar kincir raksasa. Kincir itu memutar magnet di dalam gulungan kawat. Putaran inilah yang menghasilkan listrik.",
+      "alur": ["🔥", "💨", "⚙️", "🧲", "⚡"],
+      "analogi": "Seperti dinamo sepeda yang menyalakan lampu saat roda berputar."
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "⚡",
+      "judul": "Lalu dibuat super kuat",
+      "angka": "500.000",
+      "satuan": "volt",
+      "narasi": "Supaya bisa berjalan jauh, tegangan listriknya dinaikkan sampai lima ratus ribu volt. Dengan begitu, listrik tidak banyak terbuang di kabel.",
+      "analogi": "Seperti air di selang: ditekan kuat, jadi bisa mengalir jauh."
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🗼",
+      "judul": "Lewat kabel di menara tinggi",
+      "narasi": "Listrik berjalan lewat kabel di atas menara tinggi. Kabelnya digantung setinggi itu supaya aman dari manusia dan pepohonan.",
+      "alur": ["🏭", "🗼", "🗼", "🗼", "🏙️"]
+    },
+    {
+      "tipe": "langkah",
+      "emoji": "🔌",
+      "judul": "Diturunkan sebelum masuk rumah",
+      "narasi": "Sebelum masuk kota, tegangannya diturunkan di gardu induk. Lalu diturunkan lagi di trafo yang menempel di tiang dekat rumahmu.",
+      "alur": ["🗼", "🏢", "🔌", "🏠"],
+      "analogi": "Seperti keran besar yang dikecilkan supaya aman dipakai di rumah."
+    },
+    {
+      "tipe": "fakta",
+      "emoji": "🏠",
+      "judul": "Siap dipakai di rumahmu!",
+      "angka": "220",
+      "satuan": "volt",
+      "narasi": "Sampai di rumah, tinggal dua ratus dua puluh volt. Dari pembangkit sampai lampumu, semuanya terjadi dalam sekejap."
+    },
+    {
+      "tipe": "penutup",
+      "emoji": "🧊",
+      "judul": "Besok: kenapa kulkas bisa dingin?",
+      "narasi": "Besok kita bahas, kenapa kulkas bisa dingin. Follow supaya tidak ketinggalan!"
+    }
+  ]
+}
