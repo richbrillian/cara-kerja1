@@ -1,6 +1,6 @@
 // Pemakaian:  node scripts/build.mjs            -> semua episode
 //             node scripts/build.mjs 01-listrik -> satu episode (boleh beberapa, pisahkan koma)
-// Per episode: suara (Azure bila ada kunci, lalu ElevenLabs, kalau tidak suara gratis edge-tts)
+// Per episode: suara (Azure, ElevenLabs, Piper, atau suara gratis edge-tts, sesuai kunci/model yang tersedia)
 //              -> musik latar orisinal -> render MP4 ke out/<episode>.mp4
 import fs from 'node:fs';
 import crypto from 'node:crypto';
@@ -24,6 +24,7 @@ fs.mkdirSync('out', {recursive: true});
 const extra = (process.env.REMOTION_EXTRA || '').split(' ').filter(Boolean);
 const cfg = fs.existsSync('pengaturan.json') ? JSON.parse(fs.readFileSync('pengaturan.json', 'utf8')) : {};
 const elKey = process.env.ELEVENLABS_API_KEY || '';
+const piperModel = process.env.PIPER_MODEL || '';
 const azKey = process.env.AZURE_SPEECH_KEY || '';
 const azRegion = process.env.AZURE_SPEECH_REGION || '';
 const xml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -45,6 +46,22 @@ function ttsEdge(text, voice, rate, file) {
   }
   fs.rmSync(file, {force: true});
   return false;
+}
+
+// Piper: suara open source yang jalan lokal, tanpa akun dan tanpa kuota
+function ttsPiper(text, file) {
+  const wav = file.replace(/\.mp3$/, '.wav');
+  try {
+    execFileSync('python3', ['-m', 'piper', '-m', piperModel, '-f', wav], {input: text, stdio: ['pipe', 'inherit', 'inherit']});
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', wav, '-codec:a', 'libmp3lame', '-b:a', '96k', file], {stdio: 'inherit'});
+    fs.rmSync(wav, {force: true});
+    return fs.statSync(file).size > 1000;
+  } catch {
+    console.warn('Suara Piper gagal dibuat');
+    fs.rmSync(wav, {force: true});
+    fs.rmSync(file, {force: true});
+    return false;
+  }
 }
 
 // Microsoft Azure Speech (jalur resmi, boleh komersial; paket gratis F0 ± 500 ribu karakter/bulan)
@@ -102,9 +119,10 @@ for (const id of ids) {
   const ep = {...(cfg.default || {}), ...((cfg.episode || {})[id] || {}), ...base};
   ep.id = id;
 
-  // urutan prioritas: Azure (resmi, gratis) -> ElevenLabs -> suara gratis edge-tts
+  // urutan prioritas: Azure (resmi, gratis) -> ElevenLabs -> Piper -> suara gratis edge-tts
   const pakaiAz = !!azKey && !!azRegion;
   const pakaiEl = !pakaiAz && !!elKey && !!ep.suaraEl;
+  const pakaiPiper = !pakaiAz && !pakaiEl && !!piperModel;
   const model = ep.modelEl || cfg.model || 'eleven_multilingual_v2';
   const settings = {
     stability: 0.5,
@@ -120,8 +138,10 @@ for (const id of ids) {
     ? `az|${voice}|${rate}`
     : pakaiEl
       ? `el|${ep.suaraEl}|${model}|${JSON.stringify(settings)}`
-      : `edge|${voice}|${rate}`;
-  console.log(`\n[${id}] suara: ${process.env.SKIP_VOICE ? 'dilewati' : pakaiAz ? 'Azure' : pakaiEl ? 'ElevenLabs' : 'gratis (edge-tts)'}`);
+      : pakaiPiper
+        ? `piper|${piperModel}`
+        : `edge|${voice}|${rate}`;
+  console.log(`\n[${id}] suara: ${process.env.SKIP_VOICE ? 'dilewati' : pakaiAz ? 'Azure' : pakaiEl ? 'ElevenLabs' : pakaiPiper ? 'Piper' : 'gratis (edge-tts)'}`);
 
   fs.mkdirSync(`public/audio/${id}`, {recursive: true});
   for (let i = 0; i < ep.adegan.length; i++) {
@@ -147,7 +167,9 @@ for (const id of ids) {
               settings,
               file: abs,
             })
-          : ttsEdge(a.narasi, voice, rate, abs);
+          : pakaiPiper
+            ? ttsPiper(a.narasi, abs)
+            : ttsEdge(a.narasi, voice, rate, abs);
     }
     if (!ok) {
       if (process.env.REQUIRE_VOICE) {
