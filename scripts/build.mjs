@@ -1,6 +1,6 @@
 // Pemakaian:  node scripts/build.mjs            -> semua episode
 //             node scripts/build.mjs 01-listrik -> satu episode (boleh beberapa, pisahkan koma)
-// Per episode: suara (ElevenLabs bila ada kunci API, kalau tidak suara gratis edge-tts)
+// Per episode: suara (Azure bila ada kunci, lalu ElevenLabs, kalau tidak suara gratis edge-tts)
 //              -> musik latar orisinal -> render MP4 ke out/<episode>.mp4
 import fs from 'node:fs';
 import crypto from 'node:crypto';
@@ -24,6 +24,9 @@ fs.mkdirSync('out', {recursive: true});
 const extra = (process.env.REMOTION_EXTRA || '').split(' ').filter(Boolean);
 const cfg = fs.existsSync('pengaturan.json') ? JSON.parse(fs.readFileSync('pengaturan.json', 'utf8')) : {};
 const elKey = process.env.ELEVENLABS_API_KEY || '';
+const azKey = process.env.AZURE_SPEECH_KEY || '';
+const azRegion = process.env.AZURE_SPEECH_REGION || '';
+const xml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const md5 = (s) => crypto.createHash('md5').update(s).digest('hex');
 
@@ -41,6 +44,31 @@ function ttsEdge(text, voice, rate, file) {
     }
   }
   fs.rmSync(file, {force: true});
+  return false;
+}
+
+// Microsoft Azure Speech (jalur resmi, boleh komersial; paket gratis F0 ± 500 ribu karakter/bulan)
+async function ttsAzure({text, voice, rate, file}) {
+  const ssml = `<speak version='1.0' xml:lang='id-ID'><voice name='${voice}'><prosody rate='${rate}'>${xml(text)}</prosody></voice></speak>`;
+  for (let n = 1; n <= 3; n++) {
+    const res = await fetch(`https://${azRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': azKey,
+        'Content-Type': 'application/ssml+xml',
+        'X-Microsoft-OutputFormat': 'audio-24khz-96kbitrate-mono-mp3',
+        'User-Agent': 'cara-kerja',
+      },
+      body: ssml,
+    });
+    if (res.ok) {
+      fs.writeFileSync(file, Buffer.from(await res.arrayBuffer()));
+      return true;
+    }
+    console.warn(`Azure ${res.status}: ${(await res.text()).slice(0, 300)}`);
+    if (![429, 500, 502, 503, 504].includes(res.status)) return false;
+    await sleep(3000 * n);
+  }
   return false;
 }
 
@@ -74,7 +102,9 @@ for (const id of ids) {
   const ep = {...(cfg.default || {}), ...((cfg.episode || {})[id] || {}), ...base};
   ep.id = id;
 
-  const pakaiEl = !!elKey && !!ep.suaraEl;
+  // urutan prioritas: Azure (resmi, gratis) -> ElevenLabs -> suara gratis edge-tts
+  const pakaiAz = !!azKey && !!azRegion;
+  const pakaiEl = !pakaiAz && !!elKey && !!ep.suaraEl;
   const model = ep.modelEl || cfg.model || 'eleven_multilingual_v2';
   const settings = {
     stability: 0.5,
@@ -86,8 +116,12 @@ for (const id of ids) {
   };
   const voice = ep.suara || 'id-ID-ArdiNeural';
   const rate = ep.kecepatan || '+5%';
-  const mesin = pakaiEl ? `el|${ep.suaraEl}|${model}|${JSON.stringify(settings)}` : `edge|${voice}|${rate}`;
-  console.log(`\n[${id}] suara: ${process.env.SKIP_VOICE ? 'dilewati' : pakaiEl ? 'ElevenLabs' : 'gratis (edge-tts)'}`);
+  const mesin = pakaiAz
+    ? `az|${voice}|${rate}`
+    : pakaiEl
+      ? `el|${ep.suaraEl}|${model}|${JSON.stringify(settings)}`
+      : `edge|${voice}|${rate}`;
+  console.log(`\n[${id}] suara: ${process.env.SKIP_VOICE ? 'dilewati' : pakaiAz ? 'Azure' : pakaiEl ? 'ElevenLabs' : 'gratis (edge-tts)'}`);
 
   fs.mkdirSync(`public/audio/${id}`, {recursive: true});
   for (let i = 0; i < ep.adegan.length; i++) {
@@ -101,17 +135,19 @@ for (const id of ids) {
     const abs = `public/${rel}`;
     let ok = fs.existsSync(abs);
     if (!ok) {
-      ok = pakaiEl
-        ? await ttsEleven({
-            text: a.narasi,
-            prev: ep.adegan[i - 1]?.narasi,
-            next: ep.adegan[i + 1]?.narasi,
-            voiceId: ep.suaraEl,
-            model,
-            settings,
-            file: abs,
-          })
-        : ttsEdge(a.narasi, voice, rate, abs);
+      ok = pakaiAz
+        ? await ttsAzure({text: a.narasi, voice, rate, file: abs})
+        : pakaiEl
+          ? await ttsEleven({
+              text: a.narasi,
+              prev: ep.adegan[i - 1]?.narasi,
+              next: ep.adegan[i + 1]?.narasi,
+              voiceId: ep.suaraEl,
+              model,
+              settings,
+              file: abs,
+            })
+          : ttsEdge(a.narasi, voice, rate, abs);
     }
     if (!ok) {
       if (process.env.REQUIRE_VOICE) {
