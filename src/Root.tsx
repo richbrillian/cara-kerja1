@@ -4,6 +4,7 @@ import {getAudioDurationInSeconds} from '@remotion/media-utils';
 import sample from '../episodes/01-listrik.json';
 import {PAD} from './Video';
 import {Utama} from './Utama';
+import {Reels} from './Reels';
 import type {Episode, Props} from './types';
 
 const FPS = 30;
@@ -24,14 +25,32 @@ const hitungDurasi: CalculateMetadataFunction<Props> = async ({props}) => {
 };
 
 export const Root: React.FC = () => (
-  <Composition
-    id="Video"
-    component={Utama}
-    width={1080}
-    height={1920}
-    fps={FPS}
-    durationInFrames={900}
-    defaultProps={{episode: sample as unknown as Episode}}
-    calculateMetadata={hitungDurasi}
-  />
+  <>
+    <Composition
+      id="Video"
+      component={Utama}
+      width={1080}
+      height={1920}
+      fps={FPS}
+      durationInFrames={900}
+      defaultProps={{episode: sample as unknown as Episode}}
+      calculateMetadata={hitungDurasi}
+    />
+    <Composition
+      id="Reels"
+      component={Reels}
+      width={1080}
+      height={1920}
+      fps={FPS}
+      durationInFrames={360}
+      defaultProps={{
+        foto: null,
+        teks: 'Capek itu wajar. Berhenti itu pilihan.',
+        musikFile: null,
+        volumeMusik: 0.5,
+        handle: '',
+        warna: '#8e44ad',
+      }}
+    />
+  </>
 );

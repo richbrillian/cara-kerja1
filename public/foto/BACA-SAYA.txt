@@ -1,0 +1,3 @@
+Taruh foto kamu di folder ini (jpg, jpeg, png, atau webp).
+Foto dipakai bergiliran untuk tiap reels. Pakai foto milik sendiri atau yang sudah berizin.
+Setelah foto masuk, jalankan workflow Buat Reels di tab Actions.
