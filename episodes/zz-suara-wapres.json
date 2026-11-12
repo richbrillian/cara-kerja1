@@ -1,0 +1,15 @@
+{
+  "judul": "Berita Wapres",
+  "channel": "DAILY FAKTA",
+  "suara": "id-ID-GadisNeural",
+  "kecepatan": "+6%",
+  "musik": "tanpa",
+  "warna": "#1E88E5",
+  "adegan": [
+    {"tipe": "hook", "emoji": "📰", "judul": "Wacana pemakzulan", "narasi": "Wacana pemakzulan Wapres Gibran makin ramai. Ada apa?"},
+    {"tipe": "fakta", "emoji": "🔎", "judul": "Posisi makin berat", "narasi": "Posisinya disebut makin berat, usai kasus penyadapan terbongkar."},
+    {"tipe": "fakta", "emoji": "🗣️", "judul": "Respons Jokowi", "narasi": "Jokowi minta semua pihak menghormati proses hukum dan konstitusi."},
+    {"tipe": "fakta", "emoji": "⚖️", "judul": "Publik terbelah", "narasi": "Publik terbelah. Tunggu proses hukum, atau desak langkah cepat?"},
+    {"tipe": "penutup", "emoji": "💬", "judul": "Pilih mana?", "narasi": "Kamu pilih A atau B? Tulis di komentar, lalu follow ya!"}
+  ]
+}
