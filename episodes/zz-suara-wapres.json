@@ -1,15 +1,15 @@
 {
-  "judul": "Berita Wapres",
+  "judul": "Gibran Mundur",
   "channel": "DAILY FAKTA",
   "suara": "id-ID-GadisNeural",
-  "kecepatan": "+6%",
+  "kecepatan": "+12%",
   "musik": "tanpa",
   "warna": "#1E88E5",
   "adegan": [
-    {"tipe": "hook", "emoji": "📰", "judul": "Wacana pemakzulan", "narasi": "Wacana pemakzulan Wapres Gibran makin ramai. Ada apa?"},
-    {"tipe": "fakta", "emoji": "🔎", "judul": "Posisi makin berat", "narasi": "Posisinya disebut makin berat, usai kasus penyadapan terbongkar."},
-    {"tipe": "fakta", "emoji": "🗣️", "judul": "Respons Jokowi", "narasi": "Jokowi minta semua pihak menghormati proses hukum dan konstitusi."},
-    {"tipe": "fakta", "emoji": "⚖️", "judul": "Publik terbelah", "narasi": "Publik terbelah. Tunggu proses hukum, atau desak langkah cepat?"},
-    {"tipe": "penutup", "emoji": "💬", "judul": "Pilih mana?", "narasi": "Kamu pilih A atau B? Tulis di komentar, lalu follow ya!"}
+    {"tipe": "hook", "emoji": "📰", "judul": "Gibran mundur", "narasi": "Kabar besar! Gibran resmi mundur dari kursi wakil presiden."},
+    {"tipe": "fakta", "emoji": "✉️", "judul": "Surat ke MPR", "narasi": "Surat pengunduran dirinya sudah diserahkan ke MPR hari ini."},
+    {"tipe": "fakta", "emoji": "🗣️", "judul": "Pesan Gibran", "narasi": "Kata Gibran, jabatan hanya titipan. Keutuhan bangsa adalah segalanya."},
+    {"tipe": "fakta", "emoji": "🏛️", "judul": "Langkah MPR", "narasi": "Besok MPR rapat, membahas jadwal pemilihan wapres pengganti."},
+    {"tipe": "penutup", "emoji": "💬", "judul": "Pendapatmu", "narasi": "Menurut kamu, siapa yang pantas? Tulis di komentar, dan follow ya!"}
   ]
 }
